@@ -36,6 +36,8 @@ function App() {
   const [showPreview, setShowPreview] = useState(false);
   const [activeSheet, setActiveSheet] = useState(0);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState("desc"); // desc | asc
 
 
 
@@ -135,6 +137,19 @@ function App() {
       setLoading(false);
     }
   };
+
+      const filteredHistory = backendHistory
+      .filter((item) =>
+        item.excel_file
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      )
+      .sort((a, b) => {
+        const t1 = new Date(a.timestamp).getTime();
+        const t2 = new Date(b.timestamp).getTime();
+        return sortOrder === "desc" ? t2 - t1 : t1 - t2;
+      });
+
 
   // const getFriendlyErrorMessage = () => {
   //   return "The Excel file does not match the expected template. Please verify the file format and try again.";
@@ -259,7 +274,7 @@ useEffect(() => {
           <input
             type="checkbox"
             checked={darkMode}
-            onChange={toggleDarkMode}
+            onChange={toggleDarkMode} 
           />
           <span className="slider"></span>
         </label>
@@ -407,9 +422,27 @@ useEffect(() => {
           <div className="history">
             <h3>Recent Runs</h3>
 
+            <div className="history-controls">
+              <input
+                type="text"
+                placeholder="Search by file name…"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+
+              <select
+                value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+              >
+                <option value="desc">Newest first</option>
+                <option value="asc">Oldest first</option>
+              </select>
+            </div>
+
+
             {historyLoading && <div className="muted">Loading history…</div>}
 
-            {backendHistory.map((item) => (
+            {filteredHistory.map((item) => (
               <div className="history-item" key={item.id}>
                 <div>
                   <strong>{item.excel_file}</strong>

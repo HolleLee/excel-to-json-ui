@@ -618,4 +618,33 @@ input:checked + .slider:before {
   background: #90caf9;
 }
 
+.history-controls {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0 14px;
+}
+
+.history-controls input {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.history-controls select {
+  padding: 6px 8px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: white;
+}
+
+/* Dark mode */
+.app-bg.dark .history-controls input,
+.app-bg.dark .history-controls select {
+  background: #2a2a2a;
+  color: #e0e0e0;
+  border-color: #444;
+}
 
